@@ -1,0 +1,41 @@
+amount,category,description,date,type
+1200,Housing,Monthly rent payment,2024-04-01,expense
+320,Food,Weekly grocery shopping,2024-04-05,expense
+85,Food,Restaurant dinner with family,2024-04-07,expense
+150,Transport,Monthly fuel & Uber rides,2024-04-08,expense
+60,Entertainment,Netflix & Spotify subscriptions,2024-04-03,expense
+200,Utilities,Electricity & internet bill,2024-04-07,expense
+90,Personal,Gym membership & personal care,2024-04-10,expense
+45,Food,Coffee & snacks,2024-04-12,expense
+500,Saving Tools,Monthly SIP investment,2024-04-01,expense
+180,Medical,Doctor visit & medicines,2024-04-15,expense
+70,Entertainment,Movie tickets,2024-04-18,expense
+30,Transport,Metro card recharge,2024-04-20,expense
+110,Food,Online food delivery,2024-04-22,expense
+55,Personal,Books & stationery,2024-04-24,expense
+250,Housing,Apartment maintenance fee,2024-04-25,expense
+40,Entertainment,Gaming subscription,2024-04-14,expense
+95,Utilities,Mobile phone bill,2024-04-06,expense
+1200,Housing,Monthly rent payment,2024-03-01,expense
+310,Food,Weekly grocery shopping,2024-03-04,expense
+90,Food,Brunch at cafe,2024-03-09,expense
+140,Transport,Fuel & cab rides,2024-03-11,expense
+60,Entertainment,Streaming services,2024-03-03,expense
+210,Utilities,Electricity & internet,2024-03-08,expense
+85,Personal,Haircut & personal care,2024-03-13,expense
+500,Saving Tools,SIP investment,2024-03-01,expense
+120,Medical,Pharmacy & vitamins,2024-03-17,expense
+65,Entertainment,Concert tickets,2024-03-20,expense
+100,Food,Weekend dining out,2024-03-23,expense
+35,Transport,Auto rickshaw & metro,2024-03-25,expense
+1200,Housing,Monthly rent payment,2024-02-01,expense
+295,Food,Grocery run,2024-02-06,expense
+75,Food,Pizza night,2024-02-10,expense
+160,Transport,Long-distance cab,2024-02-12,expense
+60,Entertainment,Streaming & gaming,2024-02-04,expense
+195,Utilities,Electricity bill,2024-02-07,expense
+80,Personal,Gym & toiletries,2024-02-15,expense
+500,Saving Tools,SIP investment,2024-02-01,expense
+200,Medical,Dental checkup,2024-02-19,expense
+50,Entertainment,Board games purchase,2024-02-22,expense
+130,Food,Food delivery & cafe,2024-02-25,expense
