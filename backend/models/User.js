@@ -35,6 +35,15 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: ['Housing', 'Food', 'Transport', 'Utilities', 'Entertainment', 'Medical', 'Personal'],
     },
+    monthlySpending: {
+      type: Number,
+      default: 0,
+    },
+    categoryBudgets: {
+      type: Map,
+      of: Number,
+      default: {},
+    },
     savingsGoal: {
       target: { type: Number, default: 0 },
       description: { type: String, default: '' },

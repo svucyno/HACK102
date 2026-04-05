@@ -75,8 +75,8 @@ export default function Spending({ data, currency, onDelete, deletingId, onAdd }
         {filteredTransactions.length === 0 ? (
           <div className="h-full min-h-[300px] flex flex-col items-center justify-center p-8 text-center border border-dashed border-white/10 rounded-xl">
             <FileText className="w-12 h-12 text-gray-500 mb-3" />
-            <p className="text-gray-300 font-medium mb-1">No transactions found.</p>
-            <p className="text-xs text-muted-foreground">Adjust your filters or add a new transaction.</p>
+            <p className="text-gray-300 font-medium mb-1">No transactions yet. Upload a CSV to get started.</p>
+            <p className="text-xs text-muted-foreground">Or add a new transaction manually to begin tracking.</p>
           </div>
         ) : (
           <table className="w-full text-sm text-left relative">

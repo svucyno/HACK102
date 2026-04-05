@@ -57,17 +57,20 @@ const getDashboard = async (req, res, next) => {
     const recommendations = await getAIRecommendations(user, categoryMap, trends, totalSpending);
 
     // Filter properties for the response
-    const savings = Math.max(0, (user.income || 0) - totalSpending);
-    const budgetLimit = user.income || totalSpending * 1.2; 
+    const estimatedSavings = Math.max(0, (user.income || 0) - (user.monthlySpending || totalSpending));
+    const budgetLimit = user.monthlySpending || user.income || totalSpending * 1.2; 
     const budgetUsage = budgetLimit > 0 ? Math.min(100, Math.round((totalSpending / budgetLimit) * 100)) : 0;
+    const remainingBudget = Math.max(0, budgetLimit - totalSpending);
 
     // 6. Return Complete Response Structure
     res.status(200).json({
       success: true,
       data: {
         totalSpending: parseFloat(totalSpending.toFixed(2)),
-        savings: parseFloat(savings.toFixed(2)),
+        savings: parseFloat(estimatedSavings.toFixed(2)), // savings potential or actual savings
         budgetUsage,
+        remainingBudget,
+        budgetLimit,
         income: user.income || 0,
         currency: user.currency || 'USD',
         categoryData: categoryBreakdown,

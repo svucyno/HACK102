@@ -19,7 +19,7 @@ const getProfile = async (req, res, next) => {
 // @access Private
 const updateProfile = async (req, res, next) => {
   try {
-    const { name, income, currency, categories, savingsGoal } = req.body;
+    const { name, income, currency, categories, savingsGoal, monthlySpending, categoryBudgets } = req.body;
 
     const fieldsToUpdate = {};
     if (name) fieldsToUpdate.name = name;
@@ -27,6 +27,8 @@ const updateProfile = async (req, res, next) => {
     if (currency) fieldsToUpdate.currency = currency;
     if (categories) fieldsToUpdate.categories = categories;
     if (savingsGoal) fieldsToUpdate.savingsGoal = savingsGoal;
+    if (monthlySpending !== undefined) fieldsToUpdate.monthlySpending = monthlySpending;
+    if (categoryBudgets !== undefined) fieldsToUpdate.categoryBudgets = categoryBudgets;
 
     const user = await User.findByIdAndUpdate(req.user._id, fieldsToUpdate, {
       new: true,

@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, UploadCloud, CheckCircle, Loader2, FileText, X, Sparkles } from 'lucide-react';
-import { updateProfile, uploadCSV, loadSampleData } from '../services/api';
+import { updateProfile, uploadCSV } from '../services/api';
 import Logo from '../components/Logo';
 
 export default function Onboarding() {
@@ -11,7 +11,7 @@ export default function Onboarding() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
-  const [sampleLoading, setSampleLoading] = useState(false);
+
   const [uploadStatus, setUploadStatus] = useState(null); // 'success' | 'error' | null
   const [uploadMessage, setUploadMessage] = useState('');
   const [dragOver, setDragOver] = useState(false);
@@ -22,6 +22,9 @@ export default function Onboarding() {
   const [currency, setCurrency] = useState('USD');
   const [income, setIncome] = useState('');
   const [categories, setCategories] = useState(['Housing', 'Food', 'Transport']);
+  const [monthlySpending, setMonthlySpending] = useState('');
+  const [categoryBudgets, setCategoryBudgets] = useState({});
+  const [errorMsg, setErrorMsg] = useState('');
   const [availableCategories, setAvailableCategories] = useState([
     'Housing', 'Food', 'Transport', 'Utilities', 'Insurance', 'Medical', 'Saving Tools', 'Personal', 'Entertainment'
   ]);
@@ -54,7 +57,21 @@ export default function Onboarding() {
     setShowInput(false);
   };
 
-  const nextStep = () => setStep(s => Math.min(s + 1, totalSteps));
+  const handleCategoryAmount = (category, amount) => {
+    setCategoryBudgets(prev => ({
+      ...prev,
+      [category]: amount
+    }));
+  };
+
+  const nextStep = () => {
+    if (step === 2 && !monthlySpending) {
+      setErrorMsg('Please enter your estimated monthly spending');
+      return;
+    }
+    setErrorMsg('');
+    setStep(s => Math.min(s + 1, totalSteps));
+  };
   const prevStep = () => setStep(s => Math.max(s - 1, 1));
 
   // ─── File Handlers ───────────────────────────────────────────────────────────
@@ -106,20 +123,7 @@ export default function Onboarding() {
     }
   };
 
-  const handleLoadSample = async () => {
-    setSampleLoading(true);
-    setUploadStatus(null);
-    try {
-      const result = await loadSampleData();
-      setUploadStatus('success');
-      setUploadMessage(`✅ ${result.count} sample transactions loaded!`);
-    } catch (err) {
-      setUploadStatus('error');
-      setUploadMessage(err.message || 'Failed to load sample data.');
-    } finally {
-      setSampleLoading(false);
-    }
-  };
+
 
   // ─── Finish Setup ────────────────────────────────────────────────────────────
 
@@ -130,6 +134,8 @@ export default function Onboarding() {
         income: Number(income) || 0,
         currency,
         categories,
+        monthlySpending: Number(monthlySpending) || 0,
+        categoryBudgets,
         savingsGoal: {
           percentage: Number(savingsPercentage),
           description: savingsDescription,
@@ -272,6 +278,59 @@ export default function Onboarding() {
                     )}
                   </AnimatePresence>
                 </div>
+
+                <div className="mt-6">
+                  <label className="block text-sm text-gray-400 mb-2">
+                    Estimated Monthly Spending ({currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$'})
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="e.g. 20000"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white outline-none focus:border-primary/50"
+                    value={monthlySpending}
+                    onChange={(e) => setMonthlySpending(e.target.value)}
+                  />
+                  {errorMsg && <p className="text-red-400 text-sm mt-2">{errorMsg}</p>}
+                </div>
+
+                {categories.length > 0 && (
+                  <div className="mt-4">
+                    <label className="block text-sm text-gray-400 mb-2">Set Budget per Category</label>
+                    <div className="flex flex-col gap-2">
+                      {categories.map((cat) => (
+                        <div key={cat} className="flex justify-between items-center bg-white/5 p-2 rounded-lg border border-white/10">
+                          <span className="text-sm pl-2">{cat}</span>
+                          <input
+                            type="number"
+                            placeholder="Amount"
+                            className="w-32 px-3 py-1.5 rounded-md bg-gray-800 border border-gray-700 text-sm text-white outline-none focus:border-primary/50"
+                            value={categoryBudgets[cat] || ''}
+                            onChange={(e) => handleCategoryAmount(cat, e.target.value)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {monthlySpending && Number(income) > 0 && (
+                  <div className="mt-6 p-4 bg-[#0f172a] border border-primary/30 rounded-xl flex justify-between items-center shadow-lg shadow-primary/10">
+                    <div>
+                      <p className="text-xs text-gray-400 uppercase font-bold">Remaining Budget</p>
+                      <p className="text-lg font-bold text-white">
+                        {currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$'}
+                        {Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-green-400/80 uppercase font-bold">Savings Potential</p>
+                      <p className="text-lg font-bold text-green-400">
+                        {currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$'}
+                        {Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString()} / mo
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -374,7 +433,7 @@ export default function Onboarding() {
               <div className="flex flex-col gap-5">
                 <div>
                   <h2 className="text-2xl font-semibold">Import Transactions</h2>
-                  <p className="text-sm text-muted-foreground mt-1">Upload a CSV or load sample data to populate your dashboard</p>
+                  <p className="text-sm text-muted-foreground mt-1">Upload your bank statement (CSV format)</p>
                 </div>
 
                 {/* Drop zone */}
@@ -425,18 +484,10 @@ export default function Onboarding() {
                   <button
                     onClick={handleUpload}
                     disabled={uploadLoading || !selectedFile}
-                    className="flex-1 py-2.5 px-4 bg-primary/80 hover:bg-primary rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-40"
+                    className="w-full py-3 px-4 bg-primary/80 hover:bg-primary rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-40"
                   >
                     {uploadLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
                     Upload CSV
-                  </button>
-                  <button
-                    onClick={handleLoadSample}
-                    disabled={sampleLoading}
-                    className="flex-1 py-2.5 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-40"
-                  >
-                    {sampleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4 text-secondary" />}
-                    Load Sample Data
                   </button>
                 </div>
 
