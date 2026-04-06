@@ -16,10 +16,10 @@ export default function Onboarding() {
   const [uploadMessage, setUploadMessage] = useState('');
   const [dragOver, setDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const totalSteps = 4;
+  const totalSteps = 3;
 
   // Profile Form Data
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState('INR');
   const [income, setIncome] = useState('');
   const [categories, setCategories] = useState(['Housing', 'Food', 'Transport']);
   const [monthlySpending, setMonthlySpending] = useState('');
@@ -65,9 +65,15 @@ export default function Onboarding() {
   };
 
   const nextStep = () => {
-    if (step === 2 && !monthlySpending) {
-      setErrorMsg('Please enter your estimated monthly spending');
-      return;
+    if (step === 1) {
+      if (!income) {
+        setErrorMsg('Please enter your monthly income');
+        return;
+      }
+      if (!monthlySpending) {
+        setErrorMsg('Please enter your estimated monthly spending');
+        return;
+      }
     }
     setErrorMsg('');
     setStep(s => Math.min(s + 1, totalSteps));
@@ -163,7 +169,7 @@ export default function Onboarding() {
         <h1 className="text-3xl font-bold mb-2 text-center text-gradient">Set up your profile</h1>
         <p className="text-center text-muted-foreground text-sm mb-6">Let's personalise your financial dashboard</p>
         <div className="flex gap-2 w-full">
-          {[1, 2, 3, 4].map(s => (
+          {[1, 2, 3].map(s => (
             <div key={s} className="h-2 flex-1 rounded-full bg-white/10 overflow-hidden relative">
               {step >= s && (
                 <motion.div
@@ -188,41 +194,31 @@ export default function Onboarding() {
             transition={{ duration: 0.3 }}
             className="w-full p-8 flex flex-col justify-between"
           >
-            {/* ── Step 1: Income & Currency ── */}
+            {/* ── Step 1: Expense Categories & Income ── */}
             {step === 1 && (
               <div className="flex flex-col gap-6">
-                <h2 className="text-2xl font-semibold">Income & Currency</h2>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-400">Primary Currency</label>
-                  <select
-                    value={currency}
-                    onChange={(e) => setCurrency(e.target.value)}
-                    className="bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-primary/50 text-white"
-                  >
-                    <option value="USD">USD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                    <option value="GBP">GBP (£)</option>
-                    <option value="INR">INR (₹)</option>
-                  </select>
+                <h2 className="text-2xl font-semibold">Expense Categories & Income</h2>
+                <p className="text-sm text-muted-foreground">Select your primary categories and input your income.</p>
+                
+                <div className="mb-2">
+                  <p className="text-gray-400 mb-2 text-sm">Currency</p>
+                  <div className="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white">
+                    INR (₹)
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-400">Monthly Net Income</label>
+
+                <div className="mb-2">
+                  <label className="block text-sm text-gray-400 mb-2">
+                    Monthly Income (₹)
+                  </label>
                   <input
                     type="number"
+                    placeholder="e.g. 50000"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white outline-none focus:border-primary/50"
                     value={income}
                     onChange={(e) => setIncome(e.target.value)}
-                    placeholder="e.g. 5000"
-                    className="bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-primary/50 text-white placeholder:text-gray-600"
                   />
                 </div>
-              </div>
-            )}
-
-            {/* ── Step 2: Expense Categories ── */}
-            {step === 2 && (
-              <div className="flex flex-col gap-6">
-                <h2 className="text-2xl font-semibold">Expense Categories</h2>
-                <p className="text-sm text-muted-foreground">Select your primary categories of spending</p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {availableCategories.map(cat => (
                     <label key={cat} className="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg cursor-pointer hover:bg-white/10 transition-colors">
@@ -281,7 +277,7 @@ export default function Onboarding() {
 
                 <div className="mt-6">
                   <label className="block text-sm text-gray-400 mb-2">
-                    Estimated Monthly Spending ({currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$'})
+                    Monthly Spending (₹)
                   </label>
                   <input
                     type="number"
@@ -318,15 +314,13 @@ export default function Onboarding() {
                     <div>
                       <p className="text-xs text-gray-400 uppercase font-bold">Remaining Budget</p>
                       <p className="text-lg font-bold text-white">
-                        {currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$'}
-                        {Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString()}
+                        ₹{Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString()}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-green-400/80 uppercase font-bold">Savings Potential</p>
                       <p className="text-lg font-bold text-green-400">
-                        {currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$'}
-                        {Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString()} / mo
+                        ₹{Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString()} / mo
                       </p>
                     </div>
                   </div>
@@ -334,8 +328,8 @@ export default function Onboarding() {
               </div>
             )}
 
-            {/* ── Step 3: Savings Goals ── */}
-            {step === 3 && (
+            {/* ── Step 2: Savings Goals ── */}
+            {step === 2 && (
               <div className="flex flex-col gap-6">
                 <div className="flex justify-between items-start">
                   <div>
@@ -402,8 +396,7 @@ export default function Onboarding() {
                     <div className="flex flex-col items-center justify-center text-center mt-2 p-3 bg-[#0f172a] rounded-lg border border-white/5">
                       <div className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">Estimated Savings</div>
                       <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
-                        {currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$'}
-                        {Number(income) > 0 ? ((Number(income) * savingsPercentage) / 100).toLocaleString() : '0.00'}
+                        ₹{Number(income) > 0 ? ((Number(income) * savingsPercentage) / 100).toLocaleString() : '0.00'}
                       </div>
                       <div className="text-[11px] text-gray-400 mt-2 px-2">
                         {savingsPercentage < 15 
@@ -428,8 +421,8 @@ export default function Onboarding() {
               </div>
             )}
 
-            {/* ── Step 4: CSV Upload ── */}
-            {step === 4 && (
+            {/* ── Step 3: CSV Upload ── */}
+            {step === 3 && (
               <div className="flex flex-col gap-5">
                 <div>
                   <h2 className="text-2xl font-semibold">Import Transactions</h2>
