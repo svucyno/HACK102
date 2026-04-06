@@ -72,7 +72,7 @@ const getDashboard = async (req, res, next) => {
         remainingBudget,
         budgetLimit,
         income: user.income || 0,
-        currency: user.currency || 'USD',
+        currency: 'INR',
         categoryData: categoryBreakdown,
         trendData: trends,
         aiRecommendations: recommendations,
@@ -96,20 +96,57 @@ const getDashboard = async (req, res, next) => {
 const chatWithAI = async (req, res, next) => {
   try {
     const user = req.user;
-    const { context, prompt } = req.body;
-    
-    if (!prompt) {
+    const { prompt } = req.body;
+
+    if (!prompt || !prompt.trim()) {
       return res.status(400).json({ success: false, message: 'Prompt is required' });
     }
 
-    const reply = await chatWithGemini(user, context || {}, prompt);
+    // Always fetch live data from DB — never trust client-side context alone
+    const transactions = await Transaction.find({ userId: user._id }).sort({ date: -1 }).limit(50);
 
-    res.status(200).json({
-      success: true,
-      reply
+    const totalSpending = transactions.reduce((sum, t) => sum + (t.type === 'expense' ? t.amount : 0), 0);
+
+    // Build category breakdown
+    const categoryMap = {};
+    transactions.forEach(t => {
+      if (t.type === 'expense') {
+        categoryMap[t.category] = (categoryMap[t.category] || 0) + t.amount;
+      }
     });
+    const categoryBreakdown = Object.entries(categoryMap).map(([name, value]) => ({ name, value }));
+
+    // Build recent transactions summary (last 10)
+    const recentTransactions = transactions.slice(0, 10).map(tx => ({
+      date: new Date(tx.date).toLocaleDateString('en-IN'),
+      description: tx.description,
+      category: tx.category,
+      amount: tx.amount,
+      type: tx.type,
+    }));
+
+    const serverContext = {
+      income: user.income || 0,
+      totalSpending,
+      categoryBreakdown,
+      recentTransactions,
+      savingsGoal: user.savingsGoal,
+      hasData: transactions.length > 0,
+    };
+
+    console.log('Chat context built from DB:', {
+      income: serverContext.income,
+      totalSpending: serverContext.totalSpending,
+      categories: categoryBreakdown.length,
+      transactions: transactions.length,
+    });
+
+    const reply = await chatWithGemini(user, serverContext, prompt);
+
+    res.status(200).json({ success: true, reply });
   } catch (error) {
-    res.status(500).json({ message: "AI error" });
+    console.error('chatWithAI error:', error.message);
+    next(error);
   }
 };
 

@@ -31,15 +31,7 @@ export default function AIAdvice({ data }) {
     setIsLoading(true);
 
     try {
-      // Build context from data
-      const context = {
-        income: data.income,
-        totalSpending: data.totalSpending,
-        categoryBreakdown: data.categoryData,
-        trends: data.trendData
-      };
-
-      const res = await askAIChat({ context, prompt: userMessage.text });
+      const res = await askAIChat({ prompt: userMessage.text });
       
       const aiMessage = {
         id: Date.now() + 1,
