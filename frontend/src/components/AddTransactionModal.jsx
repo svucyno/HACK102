@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Loader2, DollarSign, Tag, Calendar, FileText } from 'lucide-react';
+import { X, Loader2, Tag, Calendar, FileText } from 'lucide-react';
 import { addTransaction } from '../services/api';
 
 export default function AddTransactionModal({ isOpen, onClose, onSuccess }) {
@@ -79,7 +79,7 @@ export default function AddTransactionModal({ isOpen, onClose, onSuccess }) {
             <div className="flex flex-col gap-1.5">
               <label className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Amount</label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">₹</span>
                 <input
                   type="number"
                   name="amount"

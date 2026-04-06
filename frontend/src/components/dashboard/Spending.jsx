@@ -18,7 +18,7 @@ export default function Spending({ data, currency, onDelete, deletingId, onAdd }
     
     // Simple date filter (e.g. strict string match or partial match)
     // Here we'll do a simple match on the date string
-    const txDateStr = new Date(tx.date).toLocaleDateString('en-US');
+    const txDateStr = new Date(tx.date).toLocaleDateString('en-IN');
     const matchesDate = filterDate 
       ? new Date(tx.date).toISOString().split('T')[0] === filterDate
       : true;
@@ -93,7 +93,7 @@ export default function Spending({ data, currency, onDelete, deletingId, onAdd }
               {filteredTransactions.map((tx) => (
                 <tr key={tx.id} className="border-b border-white/5 hover:bg-white/5 transition-colors group">
                   <td className="px-4 py-4 text-gray-400 whitespace-nowrap">
-                    {new Date(tx.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    {new Date(tx.date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </td>
                   <td className="px-4 py-4 font-medium">{tx.description}</td>
                   <td className="px-4 py-4">
@@ -102,7 +102,7 @@ export default function Spending({ data, currency, onDelete, deletingId, onAdd }
                     </span>
                   </td>
                   <td className="px-4 py-4 text-right font-semibold text-white">
-                    {currency}{tx.amount.toFixed(2)}
+                    {currency}{tx.amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </td>
                   <td className="px-4 py-4 text-center">
                     <button 
