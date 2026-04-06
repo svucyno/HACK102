@@ -68,7 +68,7 @@ export default function History({ data, currency }) {
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', borderRadius: '8px' }}
                   itemStyle={{ color: '#fff' }}
-                  formatter={(value) => [`${currency}${value.toLocaleString()}`, 'Expenses']}
+                  formatter={(value) => [`${currency}${value.toLocaleString('en-IN')}`, 'Expenses']}
                 />
                 <Line 
                   type="monotone" 

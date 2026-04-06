@@ -314,13 +314,13 @@ export default function Onboarding() {
                     <div>
                       <p className="text-xs text-gray-400 uppercase font-bold">Remaining Budget</p>
                       <p className="text-lg font-bold text-white">
-                        ₹{Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString()}
+                        ₹{Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString('en-IN')}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-green-400/80 uppercase font-bold">Savings Potential</p>
                       <p className="text-lg font-bold text-green-400">
-                        ₹{Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString()} / mo
+                        ₹{Math.max(0, Number(income) - Number(monthlySpending)).toLocaleString('en-IN')} / mo
                       </p>
                     </div>
                   </div>
@@ -396,7 +396,7 @@ export default function Onboarding() {
                     <div className="flex flex-col items-center justify-center text-center mt-2 p-3 bg-[#0f172a] rounded-lg border border-white/5">
                       <div className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">Estimated Savings</div>
                       <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
-                        ₹{Number(income) > 0 ? ((Number(income) * savingsPercentage) / 100).toLocaleString() : '0.00'}
+                        ₹{Number(income) > 0 ? ((Number(income) * savingsPercentage) / 100).toLocaleString('en-IN') : '0.00'}
                       </div>
                       <div className="text-[11px] text-gray-400 mt-2 px-2">
                         {savingsPercentage < 15 

@@ -22,7 +22,7 @@ export default function Savings({ data, currency }) {
         </div>
         <h3 className="text-xl font-bold mb-2">Savings Tracker</h3>
         <p className="text-4xl font-extrabold mb-1">{savingsPct}%</p>
-        <p className="text-sm text-muted-foreground mb-8">of your {currency}{income.toLocaleString()} monthly income</p>
+        <p className="text-sm text-muted-foreground mb-8">of your {currency}{income.toLocaleString('en-IN')} monthly income</p>
         
         <div className="w-full bg-white/10 rounded-full h-3 mb-2 overflow-hidden relative">
           <div 
@@ -50,7 +50,7 @@ export default function Savings({ data, currency }) {
           <div className="p-3 bg-white/5 rounded-xl"><Award className="w-6 h-6 text-purple-400" /></div>
           <div>
             <h4 className="text-sm font-semibold text-muted-foreground mb-1">Monthly Goal</h4>
-            <p className="text-2xl font-bold">{currency}{savings.toLocaleString()}</p>
+            <p className="text-2xl font-bold">{currency}{savings.toLocaleString('en-IN')}</p>
             <p className="text-xs text-purple-400 mt-1">Currently saved this month</p>
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function Savings({ data, currency }) {
           <div className="p-3 bg-white/5 rounded-xl"><Clock className="w-6 h-6 text-cyan-400" /></div>
           <div>
             <h4 className="text-sm font-semibold text-muted-foreground mb-1">6-Month Projection</h4>
-            <p className="text-2xl font-bold">You will save {currency}{sixMonthProjection.toLocaleString()}</p>
+            <p className="text-2xl font-bold">You will save {currency}{sixMonthProjection.toLocaleString('en-IN')}</p>
             <p className="text-xs text-cyan-400 mt-1">If you maintain this rate for 6 months</p>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function Savings({ data, currency }) {
           <div className="p-3 bg-white/5 rounded-xl"><TrendingUp className="w-6 h-6 text-indigo-400" /></div>
           <div>
             <h4 className="text-sm font-semibold text-muted-foreground mb-1">Yearly Projection</h4>
-            <p className="text-2xl font-bold">{currency}{yearlyProjection.toLocaleString()}</p>
+            <p className="text-2xl font-bold">{currency}{yearlyProjection.toLocaleString('en-IN')}</p>
             <p className="text-xs text-indigo-400 mt-1">Estimated savings by end of year</p>
           </div>
         </div>

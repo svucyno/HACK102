@@ -22,7 +22,7 @@ export default function Overview({ data, currency }) {
               <p className="text-muted-foreground text-sm font-medium">Total Spending</p>
               <div className="p-2 bg-red-400/20 rounded-md"><TrendingDown className="w-4 h-4 text-red-400" /></div>
             </div>
-            <h3 className="text-3xl font-bold">{currency}{data.totalSpending?.toLocaleString()}</h3>
+            <h3 className="text-3xl font-bold">{currency}{data.totalSpending?.toLocaleString('en-IN')}</h3>
             <p className="text-xs text-red-400 mt-2">↑ 12% from last month</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-panel p-6 border-l-4 border-l-green-400">
@@ -30,7 +30,7 @@ export default function Overview({ data, currency }) {
               <p className="text-muted-foreground text-sm font-medium">Total Savings</p>
               <div className="p-2 bg-green-400/20 rounded-md"><Wallet className="w-4 h-4 text-green-400" /></div>
             </div>
-            <h3 className="text-3xl font-bold">{currency}{data.savings?.toLocaleString()}</h3>
+            <h3 className="text-3xl font-bold">{currency}{data.savings?.toLocaleString('en-IN')}</h3>
             <p className="text-xs text-green-400 mt-2">↓ 5% from last month</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-panel p-6 border-l-4 border-l-primary">
@@ -66,7 +66,7 @@ export default function Overview({ data, currency }) {
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)' }} 
                   itemStyle={{ color: '#fff' }}
-                  formatter={(value, name) => [`${currency}${value.toLocaleString()}`, `${getCategoryData(name).icon} ${name}`]}
+                  formatter={(value, name) => [`${currency}${value.toLocaleString('en-IN')}`, `${getCategoryData(name).icon} ${name}`]}
                 />
               </RechartsPieChart>
             </ResponsiveContainer>
@@ -107,7 +107,7 @@ export default function Overview({ data, currency }) {
                 </p>
                 {rec.potentialSavings > 0 && (
                   <p className="text-xs font-semibold text-green-400 mt-2">
-                    Save up to {currency}{rec.potentialSavings.toLocaleString()}/mo
+                    Save up to {currency}{rec.potentialSavings.toLocaleString('en-IN')}/mo
                   </p>
                 )}
                 <button className="mt-4 text-primary text-xs font-semibold flex items-center gap-1 justify-start opacity-0 group-hover:opacity-100 transition-opacity">
